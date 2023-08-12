@@ -1,7 +1,7 @@
 const Task = require("../models/task.model");
 
 const getTasks = (req, res, next) => {
-  const tasks = Task.find()
+  Task.find()
     .then((tasks) => res.json(tasks))
     .catch(() => {
       const err = new Error("No se encontraron tareas");
@@ -27,7 +27,7 @@ const createTask = (req, res, next) => {
     });
 };
 const getTask = (req, res, next) => {
-  const task = Task.findById(req.params.id)
+  Task.findById(req.params.id)
     .then((task) => res.json(task))
     .catch(() => {
       const err = new Error("Tarea no encontrada");
@@ -36,7 +36,7 @@ const getTask = (req, res, next) => {
     });
 };
 const updateTasks = (req, res, next) => {
-  const task = Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((task) => res.json(task))
     .catch(() => {
       const err = new Error("Solicitud incorrecta");
@@ -45,13 +45,11 @@ const updateTasks = (req, res, next) => {
     });
 };
 const deleteTasks = (req, res, next) => {
-  const task = Task.findByIdAndDelete(req.params.id)
-    .then((task) => res.json(task))
-    .catch(() => {
-      const err = new Error("Tarea no encontrada");
-      err.statusCode = 404;
-      next(err);
-    });
+  Task.findByIdAndDelete(req.params.id).catch(() => {
+    const err = new Error("Tarea no encontrada");
+    err.statusCode = 404;
+    next(err);
+  });
   res.status(204).send();
 };
 

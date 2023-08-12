@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-import cors from "cors";
+const cors = require("cors");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const authRouter = require("./routes/auth.routes");
@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 app.use("/api", authRouter);
 app.use("/api", taskRouter);
 app.use((err, req, res, next) => {
-  res.status(err.statusCode).send({ message: err.message });
+  res.status(err.statusCode).json({ message: err.message });
 });
 
 //Conexión a la base de datos
@@ -28,7 +28,7 @@ mongoose
     console.log(err);
   });
 
-app.use("/", (req, res) => res.send("Hola mundo"));
+// app.use("/", (req, res) => res.send("Hola mundo"));
 
 app.listen(PORT, () => {
   console.log(`Escuchando por el puerto ${PORT}`);

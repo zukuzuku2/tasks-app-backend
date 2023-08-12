@@ -5,6 +5,21 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const register = (req, res, next) => {
   const { email, password, username } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        const error = new Error("El email ya existe");
+        error.statusCode = 400;
+        next(error);
+      }
+    })
+    .catch(() => {
+      const error = new Error("Error al crear el usuario");
+      error.statusCode = 500;
+      next(error);
+    });
+
   bcrypt.hash(password, 10).then((hash) => {
     const user = new User({
       username,
@@ -16,7 +31,7 @@ const register = (req, res, next) => {
       .then((user) => {
         const token = jwt.sign(
           { _id: user._id },
-          NODE_ENV === "production" ? process.env.JWT_SECRET : "dev-secret",
+          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
           {
             expiresIn: "1d",
           }
@@ -30,7 +45,7 @@ const register = (req, res, next) => {
       })
       .catch(() => {
         const error = new Error("Error al crear el usuario");
-        error.status = 500;
+        error.statusCode = 500;
         next(error);
       });
   });
@@ -40,7 +55,6 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log("Llego");
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
