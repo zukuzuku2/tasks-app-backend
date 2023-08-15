@@ -7,7 +7,7 @@ const authRouter = require('./routes/auth.routes');
 const taskRouter = require('./routes/tasks.routes');
 
 const app = express();
-const { PORT, MONGODB_URI } = process.env;
+const { PORT = 3000, MONGODB_URI } = process.env;
 
 app.use(express.json());
 app.use(cors());
