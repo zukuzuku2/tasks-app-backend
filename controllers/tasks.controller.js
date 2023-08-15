@@ -10,12 +10,13 @@ const getTasks = (req, res, next) => {
     });
 };
 const createTask = (req, res, next) => {
-  const { title, description, date } = req.body;
+  const { title, description, date, priority } = req.body;
   const task = new Task({
     title,
     description,
     date,
     user: req.user._id,
+    priority,
   });
   task
     .save()
