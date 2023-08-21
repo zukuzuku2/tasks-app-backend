@@ -52,7 +52,6 @@ const register = (req, res, next) => {
   });
 };
 const login = (req, res, next) => {
-  // password = ZukuZuku
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
@@ -76,10 +75,6 @@ const login = (req, res, next) => {
       next(err);
     });
 };
-const logout = (req, res, next) => {
-  req.headers.authorization = '';
-  res.status(204).send();
-};
 const profile = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -99,6 +94,5 @@ const profile = (req, res, next) => {
 module.exports = {
   register,
   login,
-  logout,
   profile,
 };
