@@ -1,6 +1,7 @@
-const bcrypt = require("bcryptjs");
-const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const register = (req, res, next) => {
@@ -9,13 +10,13 @@ const register = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        const error = new Error("El email ya existe");
+        const error = new Error('El email ya existe');
         error.statusCode = 400;
         next(error);
       }
     })
     .catch(() => {
-      const error = new Error("Error al crear el usuario");
+      const error = new Error('Error al crear el usuario');
       error.statusCode = 500;
       next(error);
     });
@@ -28,39 +29,38 @@ const register = (req, res, next) => {
     });
     user
       .save()
-      .then((user) => {
+      .then((userData) => {
         const token = jwt.sign(
-          { _id: user._id },
-          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+          { _id: userData._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
           {
-            expiresIn: "1d",
-          }
+            expiresIn: '1d',
+          },
         );
         res.json({
-          id: user._id,
-          username: user.username,
-          email: user.email,
+          id: userData._id,
+          username: userData.username,
+          email: userData.email,
           token,
         });
       })
       .catch(() => {
-        const error = new Error("Error al crear el usuario");
+        const error = new Error('Error al crear el usuario');
         error.statusCode = 500;
         next(error);
       });
   });
 };
 const login = (req, res, next) => {
-  // password = ZukuZuku
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         {
-          expiresIn: "1d",
-        }
+          expiresIn: '1d',
+        },
       );
       res.json({
         id: user._id,
@@ -70,14 +70,10 @@ const login = (req, res, next) => {
       });
     })
     .catch(() => {
-      const err = new Error("No autorizado");
+      const err = new Error('No autorizado');
       err.statusCode = 401;
       next(err);
     });
-};
-const logout = (req, res, next) => {
-  req.headers.authorization = "";
-  res.status(204).send();
 };
 const profile = (req, res, next) => {
   User.findById(req.user._id)
@@ -89,7 +85,7 @@ const profile = (req, res, next) => {
       });
     })
     .catch(() => {
-      const err = new Error("Usuario no encontrado");
+      const err = new Error('Usuario no encontrado');
       err.statusCode = 400;
       next(err);
     });
@@ -98,6 +94,5 @@ const profile = (req, res, next) => {
 module.exports = {
   register,
   login,
-  logout,
   profile,
 };
