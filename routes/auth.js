@@ -9,7 +9,7 @@ const { validateSchema } = require('../middlewares/validator.middleware');
 const {
   registerSchema,
   loginSchema,
-} = require('../schemas/schemas.validators');
+} = require('../schemas/schemas');
 
 router.post('/register', validateSchema(registerSchema), register);
 router.post('/login', validateSchema(loginSchema), login);
