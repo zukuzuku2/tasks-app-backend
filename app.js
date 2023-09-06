@@ -3,8 +3,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
-const authRouter = require('./routes/auth.routes');
-const taskRouter = require('./routes/tasks.routes');
+const authRouter = require('./routes/auth');
+const taskRouter = require('./routes/tasks');
 
 const app = express();
 const { PORT = 3000, MONGODB_URI = 'mongodb://127.0.0.1:27017/tasksdb' } = process.env;
