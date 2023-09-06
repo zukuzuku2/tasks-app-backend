@@ -3,9 +3,9 @@ const {
   register,
   login,
   profile,
-} = require('../controllers/auth.controller');
+} = require('../controllers/auth');
 const { auth } = require('../middlewares/auth');
-const { validateSchema } = require('../middlewares/validator.middleware');
+const { validateSchema } = require('../middlewares/validator');
 const {
   registerSchema,
   loginSchema,

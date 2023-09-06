@@ -6,10 +6,10 @@ const {
   getTask,
   updateTasks,
   deleteTasks,
-} = require('../controllers/tasks.controller');
+} = require('../controllers/tasks');
 
-const { tasksSchema } = require('../schemas/schemas.validators');
-const { validateSchema } = require('../middlewares/validator.middleware');
+const { tasksSchema } = require('../schemas/schemas');
+const { validateSchema } = require('../middlewares/validator');
 
 router.get('/tasks', auth, getTasks);
 router.get('/tasks/:id', auth, getTask);
